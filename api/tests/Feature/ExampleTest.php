@@ -2,10 +2,9 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\FeatureTestCase;
 
-class ExampleTest extends TestCase
+class ExampleTest extends FeatureTestCase
 {
     /**
      * A basic test example.
@@ -15,5 +14,7 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
+
+
     }
 }
