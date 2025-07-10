@@ -1,18 +1,24 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from '@tailwindcss/vite';
-// import * from 'assets/css/main.css'
 
 export default defineNuxtConfig({
-  // ssr: true,
+  ssr: true,
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
+  css: ['~/assets/css/main.css'],
+  runtimeConfig: {
+    public: {
+      appApiUrl: process.env.NUXT_PUBLIC_APP_API_URL,
+      appBaseUrl: process.env.NUXT_PUBLIC_APP_BASE_URL,
+      // sanctum: {
+      //   baseUrl: process.env.NUXT_PUBLIC_APP_API_URL,
+      // },
+    },
+  },
   app: {
     head: {
       titleTemplate: '%s - Laravel Socialite',
     },
   },
-  runtimeConfig: {},
-  css: ['~/assets/css/main.css'],
   vite: {
     server: {
       hmr: {
@@ -26,7 +32,31 @@ export default defineNuxtConfig({
     },
     plugins: [tailwindcss()],
   },
-  modules: ['shadcn-nuxt', 'nuxt-auth-sanctum'],
+  modules: ['shadcn-nuxt', 'nuxt-auth-sanctum', '@nuxt/icon'],
+  sanctum: {
+    // mode: 'cookie',
+    baseUrl: process.env.NUXT_PUBLIC_APP_API_URL,
+    redirect: {
+      onLogin: '/dashboard',
+      onLogout: '/',
+      onAuthOnly: '/',
+      onGuestOnly: '/dashboard',
+    },
+    endpoints: {
+      csrf: '/sanctum/csrf-cookie',
+      login: '/login',
+      logout: '/logout',
+      user: '/api/user',
+    },
+    csrf: {
+      cookie: 'XSRF-TOKEN',
+      header: 'X-XSRF-TOKEN',
+    },
+    client: {
+      retry: false,
+      initialRequest: true,
+    },
+  },
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -38,31 +68,13 @@ export default defineNuxtConfig({
      */
     componentDir: './components/ui',
   },
-  sanctum: {
-    mode: 'cookie',
-    baseUrl: 'http://localhost:8080',
-    redirect: {
-      onLogin: '/dashboard',
-      onLogout: '/',
-      onAuthOnly: '/',
-      onGuestOnly: '/dashboard',
-    },
-    // endpoints: {
-      // csrf: '/sanctum/csrf-cookie',
-      // login: '/login',
-      // logout: '/logout',
-      // user: '/api/user',
-    // },
-    csrf: {
-      cookie: 'XSRF-TOKEN',
-      header: 'X-XSRF-TOKEN',
-    },
-    client: {
-      retry: false,
-      initialRequest: true,
-    },
-  },
-  imports: {
-    autoImport: true,
-  },
+  icon: {
+    customCollections: [{
+      prefix: 'icons',
+      dir: './assets/icons/customs'
+    }],
+    serverBundle: {
+      collections: ['util', 'mdi'],
+    }
+  }
 });

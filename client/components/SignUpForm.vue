@@ -129,7 +129,6 @@ const props = defineProps<{
         </CardTitle>
       </CardHeader>
       <CardContent class="">
-        <form @submit.prevent="onSubmit">
           <div class="grid gap-6">
             <div class="flex flex-col gap-4">
               <Button variant="outline" class="w-full hover:cursor-pointer">
@@ -157,71 +156,73 @@ const props = defineProps<{
               </span>
             </div>
             <div class="grid gap-4">
-              <div class="grid grid-cols-2 gap-4">
+              <form @submit.prevent="onSubmit" class="space-y-4 ">
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="grid gap-2">
+                    <FormField v-slot="{ componentField }" name="firstname">
+                      <FormItem>
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl>
+                          <Input id="firstname" type="text" placeholder="Jon" v-bind="componentField" />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                    </FormField>
+                  </div>
+                  <div class="grid gap-2">
+                    <FormField v-slot="{ componentField }" name="lastname">
+                      <FormItem>
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                          <Input id="lastname" type="text" placeholder="Doe" v-bind="componentField" />
+                        </FormControl>
+                        <FormMessage/>
+                      </FormItem>
+                    </FormField>
+                  </div>
+                </div>
                 <div class="grid gap-2">
-                  <FormField v-slot="{ componentField }" name="firstname">
+                  <FormField v-slot="{ componentField }" name="email">
                     <FormItem>
-                      <FormLabel>First Name</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input id="firstname" type="text" placeholder="Jon" v-bind="componentField" />
+                        <Input id="email" type="email" placeholder="johndoe@email.com" v-bind="componentField" />
                       </FormControl>
                       <FormMessage/>
                     </FormItem>
                   </FormField>
                 </div>
                 <div class="grid gap-2">
-                  <FormField v-slot="{ componentField }" name="lastname">
+                  <FormField v-slot="{ componentField }" name="password">
                     <FormItem>
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input id="lastname" type="text" placeholder="Doe" v-bind="componentField" />
+                        <Input id="password" type="password" placeholder="*******" v-bind="componentField" />
                       </FormControl>
                       <FormMessage/>
                     </FormItem>
                   </FormField>
                 </div>
-              </div>
-              <div class="grid gap-2">
-                <FormField v-slot="{ componentField }" name="email">
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input id="email" type="email" placeholder="johndoe@email.com" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage/>
-                  </FormItem>
-                </FormField>
-              </div>
-              <div class="grid gap-2">
-                <FormField v-slot="{ componentField }" name="password">
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input id="password" type="password" placeholder="*******" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage/>
-                  </FormItem>
-                </FormField>
-              </div>
-              <div class="grid gap-2">
-                <FormField v-slot="{ componentField }" name="confirmPassword">
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input id="confirmPassword" type="password" placeholder="********" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage/>
-                  </FormItem>
-                </FormField>
-              </div>
-              <Button 
-                type="submit" 
-                class="w-full"
-                :class="{ 'cursor-not-allowed opacity-50' : isSigningUp, 'hover:cursor-pointer': !isSigningUp }" 
-                :disable="isSigningUp">
-                <Loader2 class="size-4 animate-spin" v-if="isSigningUp" />
-                {{ isSigningUp ? 'Signing Up' : 'Sign Up' }}
-              </Button>
+                <div class="grid gap-2">
+                  <FormField v-slot="{ componentField }" name="confirmPassword">
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input id="confirmPassword" type="password" placeholder="********" v-bind="componentField" />
+                      </FormControl>
+                      <FormMessage/>
+                    </FormItem>
+                  </FormField>
+                </div>
+                <Button 
+                  type="submit" 
+                  class="w-full hover:cursor-pointer"
+                  :class="{ 'cursor-not-allowed opacity-50' : isSigningUp, 'hover:cursor-pointer': !isSigningUp }" 
+                  :disable="isSigningUp">
+                  <Loader2 class="size-4 animate-spin" v-if="isSigningUp" />
+                  {{ isSigningUp ? 'Signing Up' : 'Sign Up' }}
+                </Button>
+              </form>
             </div>
             <div class="text-center text-sm">
               Already have an account?
@@ -231,7 +232,7 @@ const props = defineProps<{
               </NuxtLink>
             </div>
           </div>
-        </form>
+        
       </CardContent>
     </Card>
     <div class="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">

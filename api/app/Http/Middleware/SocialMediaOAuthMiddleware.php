@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\SocialAccount;
+use App\Response\ApiSuccessResponse;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,12 +17,15 @@ class SocialMediaOAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $services = ['facebook', 'google', 'linkedin', 'github', 'bitbucket', 'slack'];
-        if (!in_array($request->get('service', null), $services)) {
+        if (!in_array($request->provider ?? null, SocialAccount::PROVIDERS)) {
             if ($request->expectsJson()) {
+                // new ApiSuccessResponse([
+                //     'message' => 'Invalid service provider',
+                //     'success' => false
+                // ], [], Response::HTTP_FORBIDDEN);
+
                 return response()->json([
-                    'message' => 'Invalid service provider',
-                    'success' => false
+                    'error' => 'Invalid service provider'
                 ], Response::HTTP_FORBIDDEN);
             }
 

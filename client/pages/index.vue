@@ -3,10 +3,18 @@
 import { GalleryVerticalEnd } from 'lucide-vue-next'
 import SigninForm from '@/components/SignInForm.vue'
 
+const route = useRoute()
+
 definePageMeta({
   title: 'Sign In',
   middleware: ['sanctum:guest']
 })
+
+onMounted(async() => {
+  console.log(route.params);
+  console.log(route.query);
+})
+
 </script>
 
 <template>
