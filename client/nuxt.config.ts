@@ -1,9 +1,8 @@
 import tailwindcss from '@tailwindcss/vite';
-
 export default defineNuxtConfig({
   ssr: true,
   compatibilityDate: '2025-05-15',
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NUXT_PUBLIC_IS_DEBUG == 'true' },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
@@ -18,19 +17,6 @@ export default defineNuxtConfig({
     head: {
       titleTemplate: '%s - Laravel Socialite',
     },
-  },
-  vite: {
-    server: {
-      hmr: {
-        // host: '0.0.0.0',
-        port: 24678,
-      },
-      watch: {
-        usePolling: true,
-        interval: 100,
-      },
-    },
-    plugins: [tailwindcss()],
   },
   modules: ['shadcn-nuxt', 'nuxt-auth-sanctum', '@nuxt/icon'],
   sanctum: {
@@ -69,12 +55,27 @@ export default defineNuxtConfig({
     componentDir: './components/ui',
   },
   icon: {
-    customCollections: [{
-      prefix: 'icons',
-      dir: './assets/icons/customs'
-    }],
+    customCollections: [
+      {
+        prefix: 'icons',
+        dir: './assets/icons/customs',
+      },
+    ],
     serverBundle: {
       collections: ['util', 'mdi'],
-    }
-  }
+    },
+  },
+  vite: {
+    server: {
+      hmr: {
+        // host: '0.0.0.0',
+        port: 24678,
+      },
+      watch: {
+        usePolling: true,
+        interval: 100,
+      },
+    },
+    plugins: [tailwindcss()],
+  },
 });
