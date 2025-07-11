@@ -1,19 +1,23 @@
 <script setup lang="ts">
-// const route = useRoute()
+const route = useRoute()
 const router = useRouter()
 const { isAuthenticated, refreshIdentity } = useSanctumAuth();
 
-definePageMeta({
-    title: 'Social Authentication',
-    // middleware: ['sanctum:guest'] as any
-})
+const queryParamToken: string | undefined = route.query.access_token as string
+const queryParamTokenType: string| undefined = route.query.token_type as string
+const queryParamProvider: string| undefined = route.query.provider as string
 
 onMounted(async () => {
+    // console.log(queryParamProvider, queryParamToken, queryParamTokenType)
     try {
-        await refreshIdentity()
-        if (isAuthenticated.value) {
-            router.push({ path: '/dashboard'})
+        if (queryParamToken) {
         } else {
+            await refreshIdentity()
+            if (isAuthenticated.value) {
+                router.push({ path: '/dashboard'})
+                return
+            }
+
             router.push({
                 path: '/',
                 query: {
@@ -30,6 +34,12 @@ onMounted(async () => {
             })
     }
 })
+
+
+definePageMeta({
+    title: 'Social Authentication'
+})
+
 </script>
 
 <template>

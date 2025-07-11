@@ -23,10 +23,10 @@ class UserResource extends JsonResource
         ];
     }
 
-    public function toResponse($request)
-    {
+    // public function toResponse($request)
+    // {
 
-    }
+    // }
 
     // public function withResponse(Request $request, JsonResponse $response)
     // {

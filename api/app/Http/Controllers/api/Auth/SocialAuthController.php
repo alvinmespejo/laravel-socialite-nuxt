@@ -22,14 +22,29 @@ class SocialAuthController extends Controller
     public function redirect(Request $request)
     {
         $provider = $request->provider ?? null;
-        return Socialite::driver($provider)->redirect();
+        // dd($request->isJson());
+        // return response()->json([$request->isJson(), $request->wantsJson(), $request->expectsJson()]);
+        if ($request->isJson() || $request->expectsJson()) {
+            // return Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+            return new ApiSuccessResponse([
+                'url' => Socialite::driver($provider)->stateless()->redirect()->getTargetUrl()
+            ]);
+        } else {
+            return Socialite::driver($provider)->redirect();
+        }
     }
 
     public function callback(Request $request)
     {
         $provider = $request->provider ?? null;
         try {
-            $userProviderData = Socialite::driver($provider)->user();
+
+            if ($request->isJson() || $request->expectsJson()) {
+                $userProviderData = Socialite::driver($provider)->stateless()->user();
+            } else {
+                $userProviderData = Socialite::driver($provider)->user();
+            }
+
             $providerId = $userProviderData->getId();
             $providerName = $userProviderData->getName();
             $providerEmail = $userProviderData->getEmail();
@@ -61,9 +76,18 @@ class SocialAuthController extends Controller
 
             $user->update(['login_as' => $provider]);
 
-            // return new ApiSuccessResponse(['token' => $token]);
-            // $token = $user->createToken($request->device_name ?? 'auth_token')->plainTextToken;
-            Auth::login($user, true);
+            if ($request->isJson() || $request->expectsJson()) {
+                $token = $user->createToken($request->device_name ?? 'auth_api_token')->plainTextToken;
+                return new ApiSuccessResponse([
+                    'access_token' => $token,
+                    'token_type' => 'Beater'
+                ]);
+
+                // return redirect("http://localhost:3000/auth/social-callback?provider=$provider&access_token=$token&token_type=Bearer");
+            } else {
+                Auth::login($user, true);
+            }
+
             return redirect("http://localhost:3000/auth/social-callback?provider=$provider");
         } catch (Throwable $th) {
             return new ApiErrorResponse($th, 'An error occured while processing request. Please try again.');

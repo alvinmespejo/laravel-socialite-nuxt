@@ -8,8 +8,9 @@ import SignUpForm from '@/components/SignUpForm.vue'
 
 definePageMeta({
   title: 'Sign Up',
-  middleware: ['sanctum:guest']
+  middleware: ['sanctum:guest'] as any
 })
+
 </script>
 
 <template>

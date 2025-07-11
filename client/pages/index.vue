@@ -7,12 +7,12 @@ const route = useRoute()
 
 definePageMeta({
   title: 'Sign In',
-  middleware: ['sanctum:guest']
+  middleware: ['sanctum:guest'] as any
 })
 
 onMounted(async() => {
-  console.log(route.params);
-  console.log(route.query);
+  // console.log(route.params);
+  // console.log(route.query);
 })
 
 </script>
