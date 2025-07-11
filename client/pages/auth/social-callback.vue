@@ -7,6 +7,10 @@ const queryParamToken: string | undefined = route.query.access_token as string
 const queryParamTokenType: string| undefined = route.query.token_type as string
 const queryParamProvider: string| undefined = route.query.provider as string
 
+useHead({
+    title: 'Social Media Authentication'
+})
+
 onMounted(async () => {
     // console.log(queryParamProvider, queryParamToken, queryParamTokenType)
     try {

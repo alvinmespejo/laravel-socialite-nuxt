@@ -6,8 +6,11 @@ import { GalleryVerticalEnd } from 'lucide-vue-next'
 import SignUpForm from '@/components/SignUpForm.vue'
 // export const description = 'A login page with a muted background color.'
 
-definePageMeta({
+useHead({
   title: 'Sign Up',
+})
+
+definePageMeta({
   middleware: ['sanctum:guest'] as any
 })
 

@@ -5,8 +5,11 @@ import SigninForm from '@/components/SignInForm.vue'
 
 const route = useRoute()
 
+useHead({
+  title: 'Sign In'
+})
+
 definePageMeta({
-  title: 'Sign In',
   middleware: ['sanctum:guest'] as any
 })
 
